@@ -1,0 +1,54 @@
+server:
+  port: 8081
+spring:
+  application:
+    name: ms-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: ms-users
+          uri: lb://ms-users
+          predicates:
+            - Path=/users/**
+          filters:
+            - RewritePath=/users/(?<path>.*), /$\{path}
+
+        - id: ms-enrollment
+          uri: lb://ms-enrollment
+          predicates:
+            - Path=/enrollment/**
+          filters:
+            - RewritePath=/enrollment/(?<path>.*), /$\{path}
+
+        - id: ms-files
+          uri: lb://ms-files
+          predicates:
+            - Path=/files/**
+          filters:
+            - RewritePath=/files/(?<path>.*), /$\{path}
+
+        - id: ms-notification
+          uri: lb://ms-notification
+          predicates:
+            - Path=/notification/**
+          filters:
+            - RewritePath=/notification/(?<path>.*), /$\{path}
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+            allowedHeaders:
+              - "*"
+
+
+
+eureka:
+  client:
+    register-with-eureka: true
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
