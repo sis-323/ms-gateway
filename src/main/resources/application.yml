@@ -5,6 +5,28 @@ spring:
     name: ms-gateway
   cloud:
     gateway:
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedHeaders:
+              - "Content-Type"
+              - "Origin"
+              - "Accept"
+              - "Authorization"
+              - "Content-Length"
+              - "X-Requested-With"
+            allowedOrigins:
+              - "*"
+              - "http://localhost:4200"
+              - "http://angular:4200"
+              - "http://157.230.56.211:80"
+              - "http://157.230.56.211"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
       routes:
         - id: ms-users
           uri: lb://ms-users
@@ -33,17 +55,7 @@ spring:
             - Path=/notification/**
           filters:
             - RewritePath=/notification/(?<path>.*), /$\{path}
-      globalcors:
-        cors-configurations:
-          '[/**]':
-            allowedOrigins: "*"
-            allowedMethods:
-              - GET
-              - POST
-              - PUT
-              - DELETE
-            allowedHeaders:
-              - "*"
+
 
 
 
